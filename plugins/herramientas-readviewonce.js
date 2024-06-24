@@ -1,9 +1,15 @@
 
+
 const {downloadContentFromMessage} = (await import('@whiskeysockets/baileys'));
 
 const handler = async (m, {conn}) => {
-  if (!m.quoted) throw '*[❗] 𝚁𝙴𝚂𝙿𝙾𝙽𝙳𝙴 𝙰 𝚄𝙽 𝙼𝙴𝙽𝚂𝙰𝙹𝙴 𝚀𝚄𝙴 𝙷𝙰𝚈𝙰 𝚂𝙸𝙳𝙾 𝙴𝙽𝚅𝙸𝙰𝙳𝙾 𝙴𝙽 𝚅𝙸𝙴𝚆𝙾𝙽𝙲𝙴 (𝚅𝙴𝚁 𝚂𝙾𝙻𝙾 𝚄𝙽𝙰 𝚅𝙴𝚉)*';
-  if (m.quoted.mtype !== 'viewOnceMessageV2') throw '*[❗] 𝙴𝙻 𝙼𝙴𝙽𝚂𝙰𝙹𝙴 𝚂𝙴𝙻𝙴𝙲𝙲𝙸𝙾𝙽𝙰𝙳𝙾 𝙽𝙾 𝙴𝚂 𝚅𝙸𝙴𝚆𝙾𝙽𝙲𝙴 (𝚅𝙴𝚁 𝚂𝙾𝙻𝙾 𝚄𝙽𝙰 𝚅𝙴𝚉)*';
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.herramientas_readviewonce
+
+  if (!m.quoted) throw tradutor.texto1;
+  if (m.quoted.mtype !== 'viewOnceMessageV2') throw tradutor.texto2;
   const msg = m.quoted.message;
   const type = Object.keys(msg)[0];
   const media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : 'video');

@@ -1,8 +1,15 @@
-const handler = async (m, {conn, isROwner, text}) => {
-  if (!process.send) throw 'Dont: node main.js\nDo: node index.js';
-    // conn.readMessages([m.key])
-    await m.reply('*[ ⚠ ] Reiniciando el Bot...*\n\n*—◉ Espere un momento para volver a usar el Bot, puede tomar unos minutos.*');
-    process.send('reset');
+
+
+const handler = async (m, { conn, isROwner, text }) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_restart
+
+  if (!process.send) throw tradutor.texto1;
+  // conn.readMessages([m.key])
+  await m.reply(tradutor.texto2);
+  process.send('reset');
 };
 handler.help = ['restart'];
 handler.tags = ['owner'];

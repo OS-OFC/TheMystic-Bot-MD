@@ -1,7 +1,14 @@
 import fetch from 'node-fetch';
 import {format} from 'util';
+
+
 const handler = async (m, {text}) => {
-  if (!/^https?:\/\//.test(text)) throw 'Awali *URL* dengan http:// atau https://';
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_fetch_get
+
+  if (!/^https?:\/\//.test(text)) throw tradutor.texto1;
   const _url = new URL(text);
   const url = global.API(_url.origin, _url.pathname, Object.fromEntries(_url.searchParams.entries()), 'APIKEY');
   const res = await fetch(url);

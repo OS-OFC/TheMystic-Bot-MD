@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+
 const handler = async (m, {
   conn,
   isOwner,
@@ -6,6 +7,11 @@ const handler = async (m, {
   command,
   text,
 }) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.herramientas_dropmail
+  
   conn.dropmail = conn.dropmail ? conn.dropmail : {};
   const id = 'dropmail';
 
@@ -16,15 +22,16 @@ const handler = async (m, {
   ];
 
   const [feature, inputs, inputs_, inputs__, inputs___] = text.split(' ');
-  if (!lister.includes(feature)) return m.reply('*Ejemplo:*\n' + usedPrefix + command + ' create\n\n*Seleccione un tipo existente*\n' + lister.map((v, index) => '  ○ ' + v).join('\n'));
+  if (!lister.includes(feature)) return m.reply(tradutor.texto1[0] + usedPrefix + command + tradutor.texto1[1] + lister.map((v, index) => '  ○ ' + v).join('\n'));
 
   if (lister.includes(feature)) {
     if (feature == 'create') {
       try {
+
         const eml = await random_mail();
         const timeDiff = new Date(eml[2]) - new Date();
         conn.dropmail[id] = [
-          await m.reply('*EMAIL:*\n' + eml[0] + '\n\n' + '*ID:*\n' + eml[1] + '\n\n*Expired:*\n' + msToTime(timeDiff) + '\n\n_Ejemplo *' + usedPrefix + command + ' message* Para comprobar la bandeja de entrada_'),
+          await m.reply(tradutor.texto2[0] + eml[0] + '\n\n' + tradutor.texto2[1]  + eml[1] + tradutor.texto2[2]  + msToTime(timeDiff) + tradutor.texto2[3]  + usedPrefix + command + tradutor.texto2[4] ),
           eml[0],
           eml[1],
           eml[2],
@@ -35,32 +42,32 @@ const handler = async (m, {
     }
 
     if (feature == 'message') {
-      if (!conn.dropmail[id]) return m.reply('No hay mensajes, cree un correo electrónico primero\nEjemplo *' + usedPrefix + command + ' create*');
+      if (!conn.dropmail[id]) return m.reply(tradutor.texto3[0] + usedPrefix + command + tradutor.texto3[1]);
 
       try {
         const eml = await get_mails(conn.dropmail[id][2]);
         const teks = eml[0].map((v, index) => {
-          return `*EMAIL [ ${index + 1} ]*
-*De* : ${v.fromAddr}
-*Para* : ${v.toAddr}
+          return `*${tradutor.texto4[0]} [ ${index + 1} ]*
+${tradutor.texto4[0]} ${v.fromAddr}
+${tradutor.texto4[0]} ${v.toAddr}
 
-*Mensaje* : ${v.text}
-*Tamaño* : ${formatSize(v.rawSize)}
-*Encabezamiento* : ${v.headerSubject}
-*Download* : ${v.downloadUrl}
+${tradutor.texto4[0]} ${v.text}
+${tradutor.texto4[0]} "${formatSize(v.rawSize)}
+${tradutor.texto4[0]} ${v.headerSubject}
+${tradutor.texto4[0]} ${v.downloadUrl}
    `.trim();
         }).filter((v) => v).join('\n\n________________________\n\n');
-        await m.reply(teks || '*VACÍO*' + '\n\n_Ejemplo *' + usedPrefix + command + ' delete* Para eliminar correos electrónicos_');
+        await m.reply(teks || tradutor.texto5[0] + usedPrefix + command + tradutor.texto5[1]);
       } catch (e) {
         await m.reply(eror);
       }
     }
     if (feature == 'delete') {
-      if (!conn.dropmail[id]) return m.reply('No hay correo valido');
+      if (!conn.dropmail[id]) return m.reply(tradutor.texto6);
 
       try {
         delete conn.dropmail[id];
-        await m.reply('Correo electrónico eliminado con éxito');
+        await m.reply(tradutor.texto7);
       } catch (e) {
         await m.reply(eror);
       }

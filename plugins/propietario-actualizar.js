@@ -1,11 +1,17 @@
 import { execSync } from 'child_process';
 
+
 const handler = async (m, { conn, text }) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.propietario_actualizar
+
   try {
           const stdout = execSync('git pull' + (m.fromMe && text ? ' ' + text : ''));
           let messager = stdout.toString()
-          if (messager.includes('Already up to date.')) messager = '_*< PROPIETARIO - UPDATE />*_\n\n*[ ✅ ] No hay actualizaciones pendientes.*'
-          if (messager.includes('Updating')) messager = '_*< PROPIETARIO - ACTUALIZAR />*_\n\n*[ ℹ️ ] Actualización finalizada exitosamente.*\n\n' + stdout.toString()
+          if (messager.includes('Already up to date.')) messager = tradutor.texto1
+          if (messager.includes('Updating')) messager = tradutor.texto2 + stdout.toString()
           conn.reply(m.chat, messager, m);
   } catch {      
  try {    
@@ -23,13 +29,13 @@ const handler = async (m, { conn, text }) => {
           })
           .filter(Boolean);
         if (conflictedFiles.length > 0) {
-          const errorMessage = `_*< PROPIETARIO - ACTUALIZAR />*_\n\n*[ ℹ️ ] Se han hecho cambios locales en archivos del bot que entran en conflicto con las actualizaciones del repositorio. Para actualizar, reinstala el bot o realiza las actualizaciones manualmente.*\n\n*Archivos en conflicto:*\n\n${conflictedFiles.join('\n')}.*`;
+          const errorMessage = `${tradutor.texto3} \n\n${conflictedFiles.join('\n')}.*`;
           await conn.reply(m.chat, errorMessage, m);  
         }
       }
   } catch (error) {
     console.error(error);
-    let errorMessage2 = '_*< PROPIETARIO - ACTUALIZAR />*_\n\n*[ ℹ️ ] Ocurrió un error. Por favor, inténtalo de nuevo más tarde.*';
+    let errorMessage2 = tradutor.texto4;
     if (error.message) {
       errorMessage2 += '\n*- Mensaje de error:* ' + error.message;
     }

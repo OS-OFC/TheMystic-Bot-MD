@@ -1,11 +1,19 @@
+
+
+
 const toM = (a) => '@' + a.split('@')[0];
 function handler(m, {groupMetadata}) {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.fun_formarpareja
+
   const ps = groupMetadata.participants.map((v) => v.id);
   const a = ps.getRandom();
   let b;
   do b = ps.getRandom();
   while (b === a);
-  m.reply(`*${toM(a)}, 𝙳𝙴𝙱𝙴𝚁𝙸𝙰𝚂 𝙲𝙰𝚂𝙰𝚁𝚃𝙴 💍 𝙲𝙾𝙽 ${toM(b)}, 𝙷𝙰𝙲𝙴𝙽 𝚄𝙽𝙰 𝙱𝚄𝙴𝙽𝙰 𝙿𝙰𝚁𝙴𝙹𝙰 💓*`, null, {
+  m.reply(`*${toM(a)}, ${tradutor.texto1[0]} ${toM(b)}, ${tradutor.texto1[1]}`, null, {
     mentions: [a, b],
   });
 }

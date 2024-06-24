@@ -1,7 +1,14 @@
+
+
 const handler = async (m, {conn, text, usedPrefix, command}) => {
-  if (!text) throw `*[❗] No se encontro ningun prefijo, por favor ingrese el prefijo que quiera establecer. Ejemplo:* ${usedPrefix + command} /`;
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_setprefix
+
+  if (!text) throw `${tradutor.texto1} ${usedPrefix + command} /`;
   global.prefix = new RegExp('^[' + (text || global.opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']');
-  await m.reply(`*[❗] El prefijo actual del Bot se establecio a ${text}*`);
+  await m.reply(`${tradutor.texto2} ${text}*`);
 };
 handler.help = ['setprefix'].map((v) => v + ' [prefix]');
 handler.tags = ['owner'];

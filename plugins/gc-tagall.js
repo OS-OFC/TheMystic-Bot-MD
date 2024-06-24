@@ -1,12 +1,19 @@
+
+
 const handler = async (m, {isOwner, isAdmin, conn, text, participants, args, command, usedPrefix}) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.gc_tagall
+
   if (usedPrefix == 'a' || usedPrefix == 'A') return;
   if (!(isAdmin || isOwner)) {
     global.dfail('admin', m, conn);
     throw false;
   }
   const pesan = args.join` `;
-  const oi = `*𝙼𝙴𝙽𝚂𝙰𝙹𝙴:* ${pesan}`;
-  let teks = `*⺀𝙸 𝙽 𝚅 𝙾 𝙲 𝙰 𝙽 𝙳 𝙾 - 𝙶 𝚁 𝚄 𝙿 𝙾⺀*\n\n❏ ${oi}\n\n❏ *𝙴𝚃𝙸𝚀𝚄𝙴𝚃𝙰𝚂:*\n`;
+  const oi = `${tradutor.texto1[0]} ${pesan}`;
+  let teks = `${tradutor.texto1[1]}  ${oi}\n\n${tradutor.texto1[2]}\n`;
   for (const mem of participants) {
     teks += `┣➥ @${mem.id.split('@')[0]}\n`;
   }

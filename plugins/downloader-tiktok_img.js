@@ -6,29 +6,36 @@
 
 import axios from 'axios';
 import cheerio from 'cheerio';
-let handler = async (m, { conn, text: tiktok, args, command, usedPrefix}) => {
-if (!tiktok) throw '*[❗] Ingresa un enlace de tiktok imagenes, ejemplo: "https://vm.tiktok.com/ZM2cqBRVS/".*';        
-let imagesSent
-if (imagesSent) return;
-imagesSent = true    
-try {   
-let tioShadow = await ttimg(tiktok); 
-let result = tioShadow?.data;
-for (let d of result) {
-  await conn.sendMessage(m.chat, {image: {url: d}}, {quoted: m});
- };
-imagesSent = false
-} catch {
-    imagesSent = false    
-    throw '*[❗] No se obtuvo respuesta de la página, intente más tarde.*'
- }
+
+
+let handler = async (m, { conn, text: tiktok, args, command, usedPrefix }) => {
+    const datas = global
+    const idioma = datas.db.data.users[m.sender].language
+    const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+    const tradutor = _translate.plugins.downloader_tiktok_img
+
+    if (!tiktok) throw tradutor.texto1;
+    let imagesSent
+    if (imagesSent) return;
+    imagesSent = true
+    try {
+        let tioShadow = await ttimg(tiktok);
+        let result = tioShadow?.data;
+        for (let d of result) {
+            await conn.sendMessage(m.chat, { image: { url: d } }, { quoted: m });
+        };
+        imagesSent = false
+    } catch {
+        imagesSent = false
+        throw tradutor.texto2
+    }
 };
 handler.command = /^(ttimg|tiktokimg)$/i;
 export default handler;
 
 async function ttimg(link) {
-    try {    
-        let url = `https://dlpanda.com/es?url=${link}&token=G7eRpMaa`;    
+    try {
+        let url = `https://dlpanda.com/es?url=${link}&token=G7eRpMaa`;
         let response = await axios.get(url);
         const html = response.data;
         const $ = cheerio.load(html);
@@ -37,11 +44,11 @@ async function ttimg(link) {
             imgSrc.push($(element).attr('src'));
         });
         if (imgSrc.length === 0) {
-            return { data: '*[❗] No se encontraron imágenes en el enlace proporcionado.*' };
+            return { data: tradutor.texto3 };
         }
-        return { data: imgSrc }; 
+        return { data: imgSrc };
     } catch (error) {
-        console.lo (error);
-        return { data: '*[❗] No se obtuvo respuesta de la página, intente más tarde.*'};
+        console.lo(error);
+        return { data: tradutor.texto4 };
     };
 };

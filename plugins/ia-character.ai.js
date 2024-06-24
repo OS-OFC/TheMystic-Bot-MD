@@ -1,8 +1,13 @@
 import fetch from 'node-fetch';
 
 const handler = async (m, {conn, text, usedPrefix, command}) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.ia_character_ai
+
   if (!text) {
-    throw `_*< IA - CHARACTER.AI />*_\n\n*[ ℹ️ ] Proporciona un texto.*\n\n*[ 💡 ] Ejemplo:* _${usedPrefix + command} Hola, ¿cómo estás?_`;
+    throw `${tradutor.texto1[0]} _${usedPrefix + command} ${tradutor.texto1[1]}`;
   }
 
   try {
@@ -16,10 +21,10 @@ const handler = async (m, {conn, text, usedPrefix, command}) => {
       const respuestaAPI = data.data;
       conn.reply(m.chat, respuestaAPI, m);
     } else {
-      throw '_*< IA - CHARACTER.AI />*_\n\n*[ ℹ️ ] No se pudo obtener una respuesta válida.*';
+      throw tradutor.texto2;
     }
   } catch (error) {
-    throw `_*< IA - CHARACTER.AI />*_\n\n*[ ℹ️ ] Ocurrió un error. Por favor, inténtalo de nuevo más tarde.*`;
+    throw tradutor.texto3;
   }
 };
 

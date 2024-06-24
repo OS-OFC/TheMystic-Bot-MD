@@ -1,8 +1,14 @@
 import fetch from 'node-fetch';
 import {sticker, addExif} from '../lib/sticker.js';
 import {Sticker} from 'wa-sticker-formatter';
+
 const handler = async (m, {conn, text, args, usedPrefix, command}) => {
-  if (!text) throw `*[❗] 𝙸𝙽𝙶𝚁𝙴𝚂𝙴 𝚄𝙽 𝚃𝙴𝚇𝚃𝙾*\n\n*—◉ 𝙴𝙹𝙴𝙼𝙿𝙻𝙾:*\n*◉ ${usedPrefix + command} Mystic-Bot*`;
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.sticker_ttp_attp
+
+  if (!text) throw `${tradutor.texto1} ${usedPrefix + command} Mystic-Bot*`;
   const teks = encodeURI(text);
 
   if (command == 'attp') {

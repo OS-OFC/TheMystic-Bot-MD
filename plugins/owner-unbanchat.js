@@ -1,6 +1,12 @@
+
 const handler = async (m) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_unbanchat
+
   global.db.data.chats[m.chat].isBanned = false;
-  m.reply('*[❗𝐈𝐍𝐅𝐎❗] 𝙴𝚂𝚃𝙴 𝙲𝙷𝙰𝚃 𝙵𝚄𝙴 𝙳𝙴𝚂𝙱𝙰𝙽𝙴𝙰𝙳𝙾 𝙲𝙾𝙽 𝙴𝚇𝙸𝚃𝙾*');
+  m.reply(tradutor.texto1);
 };
 handler.help = ['unbanchat'];
 handler.tags = ['owner'];

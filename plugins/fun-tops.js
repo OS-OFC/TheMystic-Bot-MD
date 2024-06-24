@@ -1,7 +1,14 @@
 import util from 'util';
 import path from 'path';
+
+
 const user = (a) => '@' + a.split('@')[0];
 function handler(m, {groupMetadata, command, conn, participants}) {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.fun_tops
+
   const ps = groupMetadata.participants.map((v) => v.id);
   const a = ps.getRandom();
   const b = ps.getRandom();
@@ -16,7 +23,7 @@ function handler(m, {groupMetadata, command, conn, participants}) {
 
   if (command == 'topgays') {
     const vn = './media/gay2.mp3';
-    const top = `*🌈TOP 10 GAYS/LESBIANAS DEL GRUPO🌈*
+    const top = `${tradutor.texto1}
     
 *_1.- ${user(a)}_*
 *_2.- ${user(b)}_*
@@ -35,7 +42,7 @@ function handler(m, {groupMetadata, command, conn, participants}) {
 
   if (command == 'topotakus') {
     const vn = './media/otaku.mp3';
-    const top = `*🌸 TOP 10 OTAKUS DEL GRUPO 🌸*
+    const top = `${tradutor.texto2}
     
 *_1.- ${user(a)}_*
 *_2.- ${user(b)}_*

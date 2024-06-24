@@ -1,4 +1,12 @@
+
+
+
 const handler = async (m, {conn, usedPrefix, text}) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.gc_promote
+
   if (isNaN(text) && !text.match(/@/g)) {
 
   } else if (isNaN(text)) {
@@ -7,8 +15,8 @@ const handler = async (m, {conn, usedPrefix, text}) => {
     var number = text;
   }
 
-  if (!text && !m.quoted) return conn.reply(m.chat, `*[❗] USO APROPIADO*\n\n*┯┷*\n*┠≽ ${usedPrefix}daradmin @tag*\n*┠≽ ${usedPrefix}darpoder -> responder a un mensaje*\n*┷┯*`, m);
-  if (number.length > 13 || (number.length < 11 && number.length > 0)) return conn.reply(m.chat, `*[ ⚠️ ] El número ingresado es incorrecto, por favor ingrese el número correcto*`, m);
+  if (!text && !m.quoted) return conn.reply(m.chat, `${tradutor.texto1[0]}\n\n*┯┷*\n*┠≽ ${usedPrefix}daradmin @tag*\n*┠≽ ${usedPrefix}darpoder ${tradutor.texto1[1]}\n*┷┯*`, m);
+  if (number.length > 13 || (number.length < 11 && number.length > 0)) return conn.reply(m.chat, tradutor.texto2, m);
 
   try {
     if (text) {
@@ -21,7 +29,7 @@ const handler = async (m, {conn, usedPrefix, text}) => {
   } catch (e) {
   } finally {
     conn.groupParticipantsUpdate(m.chat, [user], 'promote');
-    conn.reply(m.chat, `*[ ✅ ] ÓRDENES RECIBIDAS*`, m);
+    conn.reply(m.chat, tradutor.texto3, m);
   }
 };
 handler.help = ['*593xxx*', '*@usuario*', '*responder chat*'].map((v) => 'promote ' + v);

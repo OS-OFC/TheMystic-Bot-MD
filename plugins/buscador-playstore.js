@@ -1,9 +1,14 @@
 import gplay from "google-play-scraper";
 
 let handler = async (m, { conn, text }) => {
-  if (!text) throw "*[❗] 𝙸𝙽𝙶𝚁𝙴𝙴𝚂𝙴 𝙴𝙻 𝙽𝙾𝙼𝙱𝚁𝙴 𝙳𝙴 𝙻𝙰 𝙰𝙿𝙺 𝚀𝚄𝙴 𝚀𝚄𝙸𝙴𝚁𝙰 𝙱𝚄𝚂𝙲𝙰𝚁*";
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.buscador_playstore
+  
+  if (!text) throw `*${tradutor.texto1}*`;
   let res = await gplay.search({ term: text });
-  if (!res.length) throw `*[❗] 𝙸𝙽𝙶𝚁𝙴𝙴𝚂𝙴 𝙴𝙻 𝙽𝙾𝙼𝙱𝚁𝙴 𝙳𝙴 𝙻𝙰 𝙰𝙿𝙺 𝚀𝚄𝙴 𝚀𝚄𝙸𝙴𝚁𝙰 𝙱𝚄𝚂𝙲𝙰𝚁*`;
+  if (!res.length) throw `*${tradutor.texto2}*`;
   let opt = {
     contextInfo: {
       externalAdReply: {
@@ -17,11 +22,11 @@ let handler = async (m, { conn, text }) => {
   await console.log(res);
   res = res.map(
     (v) =>
-      `*🔍 Resultado:* ${v.title}
-       *✍️ Desarrollador:* ${v.developer}
-       *💸 Precio:* ${v.priceText}
-       *📈 Puntuacion:* ${v.scoreText}
-        *⛓️ Link:* ${v.url}`
+      `${tradutor.texto3[0]} ${v.title}
+      ${tradutor.texto3[1]} ${v.developer}
+      ${tradutor.texto3[2]} ${v.priceText}
+      ${tradutor.texto3[3]} ${v.scoreText}
+      ${tradutor.texto3[4]}${v.url}`
   ).join`\n\n`;
   m.reply(res, null, opt);
 };

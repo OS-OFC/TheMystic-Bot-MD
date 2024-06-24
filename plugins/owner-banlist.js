@@ -1,13 +1,21 @@
+
+
 const handler = async (m, {conn, isOwner}) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_banlist
+
+
   const chats = Object.entries(global.db.data.chats).filter((chat) => chat[1].isBanned);
   const users = Object.entries(global.db.data.users).filter((user) => user[1].banned);
   const caption = `
-┌〔 𝐔𝐒𝐔𝐀𝐑𝐈𝐎𝐒 𝐁𝐀𝐍𝐄𝐀𝐃𝐎𝐒 〕
+┌${tradutor.texto1}
 ├ Total : ${users.length} ${users ? '\n' + users.map(([jid], i) => `
 ├ ${isOwner ? '@' + jid.split`@`[0] : jid}`.trim()).join('\n') : '├'}
 └────
 
-┌〔 𝐂𝐇𝐀𝐓𝐒 𝐁𝐀𝐍𝐄𝐀𝐃𝐎𝐒 〕
+┌${tradutor.texto2}
 ├ Total : ${chats.length} ${chats ? '\n' + chats.map(([jid], i) => `
 ├ ${isOwner ? '@' + jid.split`@`[0] : jid}`.trim()).join('\n') : '├'}
 └────

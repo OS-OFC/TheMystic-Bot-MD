@@ -8,8 +8,17 @@ import {
   readFileSync,
   watch,
 } from 'fs';
+
+
+
+
 const handler = async (m, {conn, usedPrefix: _p, __dirname, args}) => {
-  conn.reply(m.chat, '*[ ✔ ] 𝙰𝚁𝙲𝙷𝙸𝚅𝙾𝚂 𝙳𝙴 𝙻𝙰 𝙲𝙰𝚁𝙿𝙴𝚃𝙰 𝚃𝙼𝙿 𝙴𝙻𝙸𝙼𝙸𝙽𝙰𝙳𝙾𝚂 𝙲𝙾𝙽 𝙴𝚇𝙸𝚃𝙾!!*', m);
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_cleartmp
+
+  conn.reply(m.chat, tradutor.texto1, m);
 
   const tmp = [tmpdir(), join(__dirname, '../tmp')];
   const filename = [];

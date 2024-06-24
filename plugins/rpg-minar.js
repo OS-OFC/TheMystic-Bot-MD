@@ -1,8 +1,15 @@
+
+
 const handler = async (m, {conn, isPrems}) => {
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.rpg_minar
+
   const hasil = Math.floor(Math.random() * 1000);
   const time = global.db.data.users[m.sender].lastmiming + 600000;
-  if (new Date - global.db.data.users[m.sender].lastmiming < 600000) throw `*[ ⏲️ ] 𝙴𝚜𝚙𝚎𝚛𝚊 ${msToTime(time - new Date())} 𝚙𝚊𝚛𝚊 𝚟𝚘𝚕𝚟𝚎𝚛 𝚊 𝚖𝚒𝚗𝚊𝚛*`;
-  m.reply(`*[ 🎉 ] 𝙶𝚎𝚗𝚒𝚊𝚕, 𝚖𝚒𝚗𝚊𝚜𝚝𝚎 ${hasil} 𝚇𝙿*`);
+  if (new Date - global.db.data.users[m.sender].lastmiming < 600000) throw `${tradutor.texto1[0]} ${msToTime(time - new Date())} ${tradutor.texto1[1]}`;
+  m.reply(`${tradutor.texto2} ${hasil} 𝚇𝙿*`);
   global.db.data.users[m.sender].lastmiming = new Date * 1;
 };
 handler.help = ['minar'];

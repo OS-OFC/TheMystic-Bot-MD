@@ -1,8 +1,14 @@
 import fs from 'fs';
 
+
 let handler = async (m, { text }) => {
-  if (!text) throw `Ingrese un nombre para su archivo de imagen y la extensión deseada (por ejemplo, nombre.png, nombre.jpg, etc.)`;
-  if (!m.quoted || !m.quoted.fileSha256) throw `Responde a la imagen que deseas guardar..`;
+  const datas = global
+  const idioma = datas.db.data.users[m.sender].language
+  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const tradutor = _translate.plugins.owner_saveimage
+
+  if (!text) throw tradutor.texto1;
+  if (!m.quoted || !m.quoted.fileSha256) throw tradutor.texto2;
   let media = await m.quoted.download();
   /*o donde quieras guardar las imágenes*/
   const path = `src/${text}`;
