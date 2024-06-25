@@ -22,11 +22,15 @@ jobs:
       - name: Install dependencies
         run: npm i
 
+      - name: Verify node_modules
+        run: ls -la node_modules
+
       - name: Update node modules cache
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          upload-chunk-size: 64000000 # 64MB
 
       - name: Run script
         run: node .
