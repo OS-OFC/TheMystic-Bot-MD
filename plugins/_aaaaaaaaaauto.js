@@ -22,14 +22,14 @@ handler.before = async (m, { conn }) => {
     // MENU
         if (/menu/i.test(m.text)) {
 
-       m.react('✅')
+       //m.react('✅')
           let caption = ido.amenu
    global.aphhoto = ido.photo
           await conn.sendMessage(m.chat, { image: { url: aphhoto }, caption, m});
         }
     //AUTO DOWNLOAD MEGA 
       if (/mega.nz/i.test(m.text)) {
-        m.react('✅')
+       // m.react('✅')
         m.reply(ido.await)
          const file = File.fromURL(m.text);
         await file.loadAttributes();
@@ -52,7 +52,7 @@ handler.before = async (m, { conn }) => {
       }
     // AUTO DOWNLOAD MEDIA TWITTER
     if (/https?:\/\/(www\.)?(twitter|x)\.com\/.*\/status/i.test(m.text)) {
-      m.react('✅');
+    //  m.react('✅');
       m.reply(ido.await)
       let res = await fetch(`${api}/download/twitter?url=${m.text}`)
         let api_response = await res.json();
@@ -64,7 +64,7 @@ handler.before = async (m, { conn }) => {
 
     // AUTO DOWNLOAD MEDIA TIKTOK
     if (/https?:\/\/(www\.|v(t|m)\.|t\.)?tiktok\.com/i.test(m.text)) {
-      m.react('✅');
+  //    m.react('✅');
       m.reply(ido.await)
       let res = await fetch(`${api}/download/tiktok2?url=${m.text}`)
         let api_response = await res.json();
@@ -76,7 +76,7 @@ handler.before = async (m, { conn }) => {
 
     // AUTO DOWNLOAD MEDIA INSTAGRAM
       if (/https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)/i.test(m.text)) {
-   m.react('✅');
+ //  m.react('✅');
   m.reply(ido.await)
 let res = await fetch(`${api}/download/instagram2?url=${m.text}`)
 let api_response = await res.json();
@@ -87,7 +87,7 @@ let cap = ido.acaption
         };
     // AUTO DOWNLOAD FROM THREADS
     if (/https?:\/\/(www\.)?threads\.net\//i.test(m.text)) {
-      m.react('✅');
+ //     m.react('✅');
       m.reply(ido.await)
       let res = await fetch(`${api}/download/threads?url=${m.text}`)
         let api_response = await res.json();
@@ -101,7 +101,7 @@ let cap = ido.acaption
   
     // AUTO DOWNLOAD FROM FACEBOOK
 if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
-      await m.react('✅')
+//      await m.react('✅')
        m.reply(ido.await);
   let res = await fetch(`${api}/download/fb?url=${m.text}`)
     let api_response = await res.json();
@@ -112,7 +112,7 @@ if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
 } 
         // AUTO DOWNLOAD MEDIA YOUTUBE
     if (/https?:\/\/((youtu|youtube)\.(be|com)|(www\.|web\.|m\.)?(youtu|youtube)\.(com|be))/i.test(m.text)) {
-       m.react('✅');
+   //    m.react('✅');
       m.reply(ido.await)
     let res = await fetch(`${api}/download/ytmp4?url=${m.text}`)
     let api_response = await res.json();
@@ -123,7 +123,7 @@ if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
             };
     // AUTO DOWNLOAD FROM GOOGLE DRIVE
     if (/https?:\/\/drive\.google\.com/i.test(m.text)) {
-      await m.react('✅')
+//      await m.react('✅')
         await m.reply(ido.await)
           let id = m.text.match(/https?:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/i)[1];
           let url = `https://drive.google.com/uc?export=download&id=${id}`;
@@ -132,7 +132,7 @@ if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
 
         // AUTO DOWNLOAD MEDIA FIRE
     if (/https?:\/\/(www\.)?mediafire\.com/i.test(m.text)) {
-     m.react('✅')
+ //    m.react('✅')
     let res = await mediafiredl(m.text.match(/https?:\/\/(www\.)?mediafire\.com\/.*/i)[0].split(/\n| /i)[0]).catch(_ => null) 
         let { url, url2, filename, ext, aploud, filesize, filesizeH } = res
  if (filesize >= 150000) return m.reply('لا يتم تحميل ملفك لانه اكبر من 150 ميغا')
@@ -141,7 +141,7 @@ if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
      await conn.sendFile(m.chat, url, filename, cap, m )
     }
 } catch {
-  m.react('❌')
+//  m.react('❌')
   m.reply('*حدث خطا ما*')
 }
 }
