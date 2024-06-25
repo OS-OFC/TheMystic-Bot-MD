@@ -33,7 +33,7 @@ jobs:
             echo "::set-output name=exists::false"
           fi
 
-      - name: Restore or Add node modules to cache after npm install
+      - name: Restore or add node modules to cache after npm install
         if: steps.check-node-modules.outputs.exists == 'false'
         id: cache-node-modules-after
         uses: actions/cache@v3
