@@ -1,60 +1,51 @@
 name: Run nodejs index.js
-on: [push]
+on:
+  push:
+    branches:
+      - master  # يمكنك تعديل هذا ليناسب الفرع الذي ترغب به
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Restore node modules cache before npm install
-        id: cache-node-modules-before
+      - name: Check if node_modules exists
+        run: |
+          if [ -d "node_modules" ]; then
+            echo "Node modules found."
+          else
+            echo "Node modules not found."
+          fi
+
+      - name: Restore node_modules from cache
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node_modules-
 
       - name: Install dependencies
-        run: npm i
-
-      - name: Check if node_modules exists
-        id: check-node-modules
-        run: |
-          if [ -d "node_modules" ]; then
-            echo "Node modules found."
-            echo "::set-output name=exists::true"
-          else
-            echo "Node modules not found."
-            echo "::set-output name=exists::false"
-          fi
-
-      - name: Restore or add node modules to cache after npm install
-        if: steps.check-node-modules.outputs.exists == 'false'
-        id: cache-node-modules-after
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-          cache-action: 'cache'
+        run: npm install
 
       - name: Verify node_modules
         run: ls -la node_modules
 
-      - name: Update node modules cache after npm install
-        if: steps.check-node-modules.outputs.exists == 'true'
+      - name: Cache updated node_modules
+        if: success()  # يتم التخزين فقط عندما يتم تثبيت الحزم بنجاح
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
           upload-chunk-size: 64000000
-          cache-action: 'update'
 
       - name: Run script
-        run: node .
+        run: node index.js
