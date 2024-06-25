@@ -10,8 +10,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Restore node modules cache
-        id: cache-node-modules
+      - name: Restore node modules cache before npm install
+        id: cache-node-modules-before
         uses: actions/cache@v3
         with:
           path: node_modules
@@ -22,15 +22,39 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Verify node_modules
-        run: ls -la node_modules
+      - name: Check if node_modules exists
+        id: check-node-modules
+        run: |
+          if [ -d "node_modules" ]; then
+            echo "Node modules found."
+            echo "::set-output name=exists::true"
+          else
+            echo "Node modules not found."
+            echo "::set-output name=exists::false"
+          fi
 
-      - name: Update node modules cache
+      - name: Restore or Add node modules to cache after npm install
+        if: steps.check-node-modules.outputs.exists == 'false'
+        id: cache-node-modules-after
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-          upload-chunk-size: 64000000 # 64MB
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+          cache-action: 'cache'
+
+      - name: Verify node_modules
+        run: ls -la node_modules
+
+      - name: Update node modules cache after npm install
+        if: steps.check-node-modules.outputs.exists == 'true'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          upload-chunk-size: 64000000
+          cache-action: 'update'
 
       - name: Run script
         run: node .
