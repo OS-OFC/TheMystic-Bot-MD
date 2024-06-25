@@ -140,9 +140,9 @@ if (/https?:\/\/(fb\.watch|(www\.|web\.|m\.)?facebook\.com)/i.test(m.text)) {
         let cap = ido.acaption
      await conn.sendFile(m.chat, url, filename, cap, m )
     }
-} catch {
+} catch (e) {
 //  m.react('❌')
-  m.reply('*حدث خطا ما*')
+  m.reply(`*حدث خطا ما* : ${e}`)
 }
 }
 
