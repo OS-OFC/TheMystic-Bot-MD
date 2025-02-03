@@ -1,51 +1,12 @@
 name: Run nodejs index.js
-on:
-  push:
-    branches:
-      - master  # يمكنك تعديل هذا ليناسب الفرع الذي ترغب به
-
+on: [push]
 jobs:
   run-script:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Check if node_modules exists
-        run: |
-          if [ -d "node_modules" ]; then
-            echo "Node modules found."
-          else
-            echo "Node modules not found."
-          fi
-
-      - name: Restore node_modules from cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Verify node_modules
-        run: ls -la node_modules
-
-      - name: Cache updated node_modules
-        if: success()  # يتم التخزين فقط عندما يتم تثبيت الحزم بنجاح
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          upload-chunk-size: 64000000
-
-      - name: Run script
-        run: node index.js
+      - run: npm i 
+      - run: node index.js
