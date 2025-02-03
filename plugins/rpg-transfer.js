@@ -3,8 +3,8 @@ const confirmation = {};
 
 async function handler(m, { conn, args, usedPrefix, command }) {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.rpg_transfer
 
   if (confirmation[m.sender]) return conn.sendMessage(m.chat, {text: tradutor.texto1, mentions: [m.sender]}, {quoted: m});
@@ -37,8 +37,8 @@ ${tradutor.texto6[4]}`.trim();
 
 handler.before = async (m) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.rpg_transfer
   
   if (m.isBaileys) return;

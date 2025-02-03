@@ -1,33 +1,48 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
+import fs from 'fs';
 
 const handler = async (m, { conn, text }) => {
-  const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
-  const tradutor = _translate.plugins.downloader_tiktokstalk
+  const datas = global;
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje;
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`));
+  const tradutor = _translate.plugins.downloader_tiktokstalk;
 
-  if (!text) return conn.reply(m.chat, tradutor.texto1, m);
+  if (!text) return conn.reply(m.chat, tradutor.texto1, m);  
+
   try {
-    const res = await fetch(`https://api.lolhuman.xyz/api/stalktiktok/${text}?apikey=${lolkeysapi}`);
-    const res2 = `https://api.lolhuman.xyz/api/pptiktok/${text}?apikey=${lolkeysapi}`;
-    const json = await res.json();
-    if (res.status !== 200) throw await res.text();
-    if (!json.status) throw json;
-    const thumb = await (await fetch(json.result.user_picture)).buffer();
-    const Mystic = `
-${tradutor.texto2[0]} ${json.result.username}
-${tradutor.texto2[1]}  ${json.result.nickname}
-${tradutor.texto2[2]}  ${json.result.followers}
-${tradutor.texto2[3]}  ${json.result.followings}
-${tradutor.texto2[4]}  ${json.result.likes}
-${tradutor.texto2[5]}  ${json.result.video}
-${tradutor.texto2[6]}  ${json.result.bio}
+    const response = await axios.get("https://deliriusapi-official.vercel.app/tools/tiktokstalk", {
+      params: { q: text }
+    });
+
+    const data = response.data;
+
+    if (data.status && data.result) {
+      const user = data.result.users;
+      const stats = data.result.stats;
+
+      const Mystic = `
+${tradutor.texto2[0]} ${user.username}   
+${tradutor.texto2[1]} ${user.nickname}   
+${tradutor.texto2[2]} ${stats.followerCount}    
+${tradutor.texto2[3]} ${stats.followingCount}   
+${tradutor.texto2[4]} ${stats.likeCount || 'N/A'}    
+${tradutor.texto2[5]} ${stats.videoCount || 'N/A'}
+${tradutor.texto2[6]} ${user.signature || 'N/A'}   
 `.trim();
-    conn.sendFile(m.chat, res2, 'error.jpg', Mystic, m, false);
+
+      const imageUrl = user.avatarLarger;
+      const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+      const imageBuffer = Buffer.from(imageResponse.data, "binary");
+
+      await conn.sendFile(m.chat, imageBuffer, 'profile.jpg', Mystic, m);
+    } else {
+      throw tradutor.texto3; 
+    }
   } catch (e) {
-    throw tradutor.texto3;
+    throw tradutor.texto3;  
   }
 };
+
 handler.help = ['tiktokstalk'].map((v) => v + ' <username>');
 handler.tags = ['stalk'];
 handler.command = /^(tiktokstalk|ttstalk)$/i;

@@ -1,14 +1,14 @@
-import uploadImage from '../lib/uploadImage.js';
-import {sticker} from '../lib/sticker.js';
-import MessageType from '@whiskeysockets/baileys';
+import uploadImage from '../src/libraries/uploadImage.js';
+import {sticker} from '../src/libraries/sticker.js';
+import MessageType from "baileys";
 
 
 const effects = ['greyscale', 'invert', 'brightness', 'threshold', 'sepia', 'red', 'green', 'blue', 'blurple', 'pixelate', 'blur'];
 
 const handler = async (m, {conn, usedPrefix, text}) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.sticker_stickerfilter
 
   const effect = text.trim().toLowerCase();

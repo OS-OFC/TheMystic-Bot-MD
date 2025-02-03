@@ -1,11 +1,10 @@
 
-const {generateWAMessageFromContent, prepareWAMessageMedia, proto} = (await import('@whiskeysockets/baileys')).default;
+const {generateWAMessageFromContent, prepareWAMessageMedia, proto} = (await import("baileys")).default;
 import fetch from 'node-fetch';
-const {getBinaryNodeChild, getBinaryNodeChildren} = (await import('@whiskeysockets/baileys')).default;
+const {getBinaryNodeChild, getBinaryNodeChildren} = (await import("baileys")).default;
 const handler = async (m, {conn, text, participants, args}) => {
-  const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = global.db.data.users[m.sender].language || global.defaultLenguaje 
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.gc_add
 
   if (!global.db.data.settings[conn.user.jid].restrict) throw tradutor.texto1;

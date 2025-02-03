@@ -1,9 +1,7 @@
-
-
 const handler = async (m, {conn, usedPrefix}) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.info_groupsofc
 
   const doc = ['pdf', 'zip', 'vnd.openxmlformats-officedocument.presentationml.presentation', 'vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'vnd.openxmlformats-officedocument.wordprocessingml.document'];
@@ -19,10 +17,11 @@ ${tradutor.texto1[1]}
 
 4.- https://chat.whatsapp.com/CjexkGVr37J6GuSdDVAHzC
 
-> Comunidad conjunta de Bots:
-1.- https://whatsapp.com/channel/0029Vablj8M05MUnustq3q1S
+> Sunlight Team  :
 
-2.- https://chat.whatsapp.com/DFpCyH1mOJM9TxbCdYTwvv`.trim();
+1.- https://whatsapp.com/channel/0029Vam7yUg77qVaz3sIAp0z
+
+2.- https://chat.whatsapp.com/Fy74b6fgE9SJJpHVi6CKJY`.trim();
   const buttonMessage= {
     'document': {url: `https://github.com/BrunoSobrino/TheMystic-Bot-MD`},
     'mimetype': `application/${document}`,

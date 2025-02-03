@@ -3,8 +3,8 @@ import {performance} from 'perf_hooks';
 
 const handler = async (m, {conn, text}) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.fun_doxeo_falso
 
     
@@ -95,11 +95,11 @@ ${tradutor.texto2[32]}  ${fakeData.modemJumps}`;
     
 async function loading() {
 var hawemod = [
-"《 █▒▒▒▒▒▒▒▒▒▒▒》10%",
-"《 ████▒▒▒▒▒▒▒▒》30%",
-"《 ███████▒▒▒▒▒》50%",
-"《 ██████████▒▒》80%",
-"《 ████████████》100%"
+"_《 █▒▒▒▒▒▒▒▒▒▒▒》10%_",
+"_《 ████▒▒▒▒▒▒▒▒》30%_",
+"_《 ███████▒▒▒▒▒》50%_",
+"_《 ██████████▒▒》80%_",
+"_《 ████████████》100%_"
 ]
       let { key } = await conn.sendMessage(m.chat, {text: `${tradutor.texto3}`}, {quoted: m})
  for (let i = 0; i < hawemod.length; i++) {

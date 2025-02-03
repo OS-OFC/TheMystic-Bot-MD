@@ -2,8 +2,8 @@
 
 const handler = async (m, {conn, usedPrefix, command, args, isOwner, isAdmin, isROwner}) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.config_funciones
 
 
@@ -35,7 +35,7 @@ ${tradutor.texto4[3]}
 
 --------------------------------
 
-${tradutor.texto5[0]} 🔗 | ANTILINK 2
+${tradutor.texto5[0]} | ANTILINK 2
 ${tradutor.texto5[1]}  ${usedPrefix + command} antilink2
 ${tradutor.texto5[2]}
 ${tradutor.texto5[3]}

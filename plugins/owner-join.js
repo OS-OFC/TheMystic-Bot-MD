@@ -4,8 +4,8 @@ const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
 let enviando;
 const handler = async (m, {conn, text, isMods, isOwner, isPrems}) => {
   const datas = global
-  const idioma = datas.db.data.users[m.sender].language
-  const _translate = JSON.parse(fs.readFileSync(`./language/${idioma}.json`))
+  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
+  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
   const tradutor = _translate.plugins.owner_join
 
  if (enviando) return;
